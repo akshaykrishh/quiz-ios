@@ -13,7 +13,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var trueBtn: UIButton!
     @IBOutlet weak var falseBtn: UIButton!
     
-    
     let quiz = [
         Question(q: "A slug's blood is green.", a: "True"),
         Question(q: "Approximately one quarter of human bones are in the feet.", a: "True"),
@@ -46,9 +45,9 @@ class ViewController: UIViewController {
         let actualAnswer = quiz[questionNumber].answer
         
         if userAnswer == actualAnswer {
-            print("right")
+            sender.backgroundColor = UIColor.green
         }else {
-            print("wrong")
+            sender.backgroundColor = UIColor.red
         }
         
         if questionNumber < quiz.count - 1{
@@ -56,12 +55,16 @@ class ViewController: UIViewController {
         }else{
             questionNumber = 0
         }
-        
-        questionUpdate()
+        Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(questionUpdate), userInfo: nil, repeats: false)
+
     }
     
-    func questionUpdate(){
+    @objc func questionUpdate(){
+        let percentageProgress = Double(questionNumber + 1)/Double(quiz.count)
+        progessBar.progress = Float(percentageProgress)
         questionLabel.text = quiz[questionNumber].text
+        trueBtn.backgroundColor = UIColor.clear
+        falseBtn.backgroundColor = UIColor.clear
     }
     
 }
